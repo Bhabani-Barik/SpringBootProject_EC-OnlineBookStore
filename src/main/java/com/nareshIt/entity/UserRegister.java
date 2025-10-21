@@ -1,5 +1,10 @@
 package com.nareshIt.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +40,13 @@ public class UserRegister {
 	
 	@Column(name="contactId")
 	private long contactId;
+	
+	@CreationTimestamp
+	@Column(name = "createdDate")
+	public LocalDateTime createdDate;
+	
+	
+	@UpdateTimestamp
+	@Column(name = "updatedDate")
+	public LocalDateTime updatedDate;
 }
