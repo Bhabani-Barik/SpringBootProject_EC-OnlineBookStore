@@ -8,9 +8,10 @@ import com.nareshIt.repository.UserRegisterRepo;
 import com.nareshIt.service.UserRegisterService;
 
 @Component
-public class UserRegisterServiceImpl implements UserRegisterService{
-	
-	@Autowired UserRegisterRepo userRegisterRepo;
+public class UserRegisterServiceImpl implements UserRegisterService {
+
+	@Autowired
+	UserRegisterRepo userRegisterRepo;
 
 	@Override
 	public String insertUserRegister(UserRegister userRegister) {
