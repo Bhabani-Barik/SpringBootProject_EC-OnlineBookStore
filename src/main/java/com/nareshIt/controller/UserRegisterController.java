@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nareshIt.entity.UserRegister;
 import com.nareshIt.model.ResponseMessage;
 import com.nareshIt.model.UserRequest;
@@ -108,6 +111,35 @@ public class UserRegisterController {
 	public UserRequest UserRequest (@PathVariable Long id) {
 		UserRequest registerDetails = userRegisterService.getUserRegisterDetails(id);
 		return registerDetails;
+	}
+	
+	
+	
+	@PostMapping("/uploadMultiUserRegister")
+	public ResponseEntity<ResponseMessage> uploadMultiUserRegister(@RequestParam String jsonData,
+			MultipartFile[] files) {
+
+		try {
+
+			UserRequestDto userRequestDto = new ObjectMapper().readValue(jsonData, UserRequestDto.class);
+
+			UserRegister uploadMultiUserRegister = userRegisterService.uploadMultiUserRegister(userRequestDto, files);
+
+			if (uploadMultiUserRegister != null) {
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.body(new ResponseMessage(HttpURLConnection.HTTP_CREATED, Constants.SUCCESS,
+								"user registered succesfully", uploadMultiUserRegister));
+
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(
+						HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED, "user registered failed"));
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(
+					HttpURLConnection.HTTP_INTERNAL_ERROR, Constants.FAILED, "Internal Server Error"));
+
+		}
+
 	}
 
 }

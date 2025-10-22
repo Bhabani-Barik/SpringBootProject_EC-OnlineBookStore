@@ -5,10 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.nareshIt.entity.FilesEntity;
 import com.nareshIt.entity.UserRegister;
 import com.nareshIt.model.UserRequest;
 import com.nareshIt.model.UserRequestDto;
+import com.nareshIt.repository.FileRepo;
 import com.nareshIt.repository.UserRegisterRepo;
 import com.nareshIt.service.UserRegisterService;
 
@@ -17,6 +20,9 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 
 	@Autowired
 	UserRegisterRepo userRegisterRepo;
+	
+	@Autowired private FileRepo fileRepo;
+
 
 	@Override
 	public UserRegister insertUserRegister(UserRequestDto userRequestDto) {
@@ -71,6 +77,38 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 		UserRegister userRegister = byId.get();
 		return new UserRequest(userRegister.getFirstName(), userRegister.getLastName(), userRegister.getEmail());
 	}
+
+
+
+	@Override
+	public UserRegister uploadMultiUserRegister(UserRequestDto userRequestDto, MultipartFile[] files) {
+		
+		UserRegister user = new UserRegister();
+		
+		try {
+			user.setFirstName(userRequestDto.getFirstName());
+			user.setLastName(userRequestDto.getLastName());
+			user.setEmail(userRequestDto.getEmail());
+			user.setPassword(Base64.getEncoder().encodeToString(userRequestDto.getPassword().getBytes()));
+			userRegisterRepo.save(user);
+			
+			if (files != null && files.length > 0) {
+				for (MultipartFile multipartFile : files) {
+					FilesEntity fss = new FilesEntity();
+					fss.setFileName(multipartFile.getOriginalFilename());
+					fss.setFileType(multipartFile.getContentType());
+					fss.setData(multipartFile.getBytes());
+					fileRepo.save(fss);
+				}
+			}
+		} catch( Exception e) {
+			e.printStackTrace();
+		}
+			
+		return user;
+	}
+	
+	
 
 
 }
