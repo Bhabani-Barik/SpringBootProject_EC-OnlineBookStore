@@ -103,9 +103,9 @@ public class UserRegisterController {
 	}
 
 	@Operation(summary = "User Details", description = "Get the user deatils from EC-Online Book Store Management Application")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "user Login successfully")})
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Getting user details successfully")})
 	@GetMapping("/userDetails/{id}")
-	public UserRequest getMethodName(@PathVariable Long id) {
+	public UserRequest UserRequest (@PathVariable Long id) {
 		UserRequest registerDetails = userRegisterService.getUserRegisterDetails(id);
 		return registerDetails;
 	}

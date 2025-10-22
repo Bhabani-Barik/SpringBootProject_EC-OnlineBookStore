@@ -69,7 +69,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 	public UserRequest getUserRegisterDetails(Long id) {
 		 Optional<UserRegister> byId = userRegisterRepo.findById(id);
 		UserRegister userRegister = byId.get();
-		return new UserRequest(userRegister.getFirstName(), userRegister.getLastName());
+		return new UserRequest(userRegister.getFirstName(), userRegister.getLastName(), userRegister.getEmail());
 	}
 
 
