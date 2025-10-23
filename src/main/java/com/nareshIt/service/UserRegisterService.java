@@ -1,5 +1,7 @@
 package com.nareshIt.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nareshIt.entity.UserRegister;
@@ -16,4 +18,6 @@ public interface UserRegisterService {
 	
 	public UserRegister uploadMultiUserRegister(UserRequestDto userRequestDto, MultipartFile[] files);
 
+	public List<UserRegister> getAllUsersRegisterDetails();
+	
 }
