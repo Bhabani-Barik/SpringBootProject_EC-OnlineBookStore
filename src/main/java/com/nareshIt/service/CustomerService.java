@@ -1,15 +1,18 @@
 package com.nareshIt.service;
 
+import java.util.List;
+
 import com.nareshIt.entity.Customer;
 
 public interface CustomerService {
 	
-	public Customer insertCustmers(Customer customer);
+	public Customer insertCustomer(Customer customer);
 
-	public Customer UpdatessCustmers(Customer customer);
+	public Customer updateCustomer(Customer customer);
 
-	public Customer createdOrUpdatessCustmers(Customer customer);
+	public Customer createdOrUpdateCustomer(Customer customer);
 
-	public Customer getByCustmersId(Long id);
+	public Customer getByCustomerId(Long id);
 
+	public List<Customer> getByAllCustomer();
 }

@@ -1,5 +1,6 @@
 package com.nareshIt.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CustmerServiceImpl implements  CustomerService{
 	CustmerRepository custmerRepoo;
 
 	@Override
-	public Customer insertCustmers(Customer customer) {
+	public Customer insertCustomer(Customer customer) {
 
 		Customer cus = custmerRepoo.save(customer);
 
@@ -24,7 +25,7 @@ public class CustmerServiceImpl implements  CustomerService{
 	}
 
 	@Override
-	public Customer UpdatessCustmers(Customer customer) {
+	public Customer updateCustomer(Customer customer) {
 
 		Customer cus = custmerRepoo.save(customer);
 
@@ -32,7 +33,7 @@ public class CustmerServiceImpl implements  CustomerService{
 	}
 
 	@Override
-	public Customer createdOrUpdatessCustmers(Customer customer) {
+	public Customer createdOrUpdateCustomer(Customer customer) {
 
 		if (customer.getId() == null) {
 
@@ -56,12 +57,19 @@ public class CustmerServiceImpl implements  CustomerService{
 	}
 
 	@Override
-	public Customer getByCustmersId(Long id) {
+	public Customer getByCustomerId(Long id) {
 		Optional<Customer> byId = custmerRepoo.findById(id);
 		if (!byId.isPresent()) {
 
 			throw new RuntimeException("Custmer Id Not Found");
 		}
 		return byId.get();
+	}
+	
+	@Override
+	public List<Customer> getByAllCustomer() {
+		List<Customer> list = custmerRepoo.findAll();
+
+		return list;
 	}
 }

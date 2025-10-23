@@ -1,6 +1,7 @@
 package com.nareshIt.controller;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class CustomerController {
 							HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED, "email and name cannot be empty"));
 				}
 
-				Customer insertCustmers = custmerService.insertCustmers(customer);
+				Customer insertCustmers = custmerService.insertCustomer(customer);
 
 				if (insertCustmers != null) {
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_CREATED, Constants.SUCCESS,
@@ -63,7 +64,7 @@ public class CustomerController {
 			}
 		}
 	 
-	    @PutMapping("/custmerupadte")
+	    @PutMapping("/updatesCustmer")
 		public ResponseEntity<ResponseMessage> custmerUpdates(@RequestBody Customer customer) {
 
 			try {
@@ -75,12 +76,12 @@ public class CustomerController {
 				}
 				if (customer.getId() == null) {
 
-					Customer insertCustmers = custmerService.UpdatessCustmers(customer);
+					Customer insertCustmers = custmerService.updateCustomer(customer);
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_CREATED, Constants.SUCCESS,
 							"custmer update successfully", insertCustmers));
 
 				} else {
-					Customer insertCustmers = custmerService.insertCustmers(customer);
+					Customer insertCustmers = custmerService.insertCustomer(customer);
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_OK, Constants.SUCCESS,
 							"custmer updated successfully", insertCustmers));
 
@@ -92,7 +93,7 @@ public class CustomerController {
 		}
 	 
 	 
-	    @PostMapping("/custmersaveOrupdates")
+	    @PostMapping("/createdOrUpdatesCustmer")
 		public ResponseEntity<ResponseMessage> custmerORUpdates(@RequestBody Customer customer) {
 
 			try {
@@ -104,12 +105,12 @@ public class CustomerController {
 				}
 				if (customer.getId() == null) {
 
-					Customer createdOrUpdatessCustmers = custmerService.createdOrUpdatessCustmers(customer);
+					Customer createdOrUpdatessCustmers = custmerService.createdOrUpdateCustomer(customer);
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_CREATED, Constants.SUCCESS,
 							"custmer saved successfully", createdOrUpdatessCustmers));
 
 				} else {
-					Customer createdOrUpdatessCustmers = custmerService.createdOrUpdatessCustmers(customer);
+					Customer createdOrUpdatessCustmers = custmerService.createdOrUpdateCustomer(customer);
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_OK, Constants.SUCCESS,
 							"custmer updated successfully", createdOrUpdatessCustmers));
 
@@ -124,7 +125,7 @@ public class CustomerController {
 	        @GetMapping("/getByCustmerId/{id}")
 			public ResponseEntity<ResponseMessage> custmerORUpdates(@PathVariable Long id) {
 
-				Customer byCustmersId = custmerService.getByCustmersId(id);
+				Customer byCustmersId = custmerService.getByCustomerId(id);
 				if (byCustmersId != null) {
 					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_OK, Constants.SUCCESS,
 							"custmer id getting successfully", byCustmersId));
@@ -135,4 +136,17 @@ public class CustomerController {
 
 				}
 			}
+	        
+	        @GetMapping("/getAllCustmers")
+	  		public ResponseEntity<ResponseMessage> getAllCustmerss() {
+	  		   
+	  			 List<Customer> byAllCustmers = custmerService.getByAllCustomer();
+	  			if(byAllCustmers!=null) {
+	  		       return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_OK, Constants.SUCCESS, "custmer  getting all  successfully", byAllCustmers));
+	  			
+	  			 }else {
+	  				 return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED, "custmer id getting Failed", byAllCustmers));
+
+	  			 }
+	  		}  
 }
