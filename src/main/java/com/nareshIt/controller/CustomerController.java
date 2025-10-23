@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nareshIt.entity.Customer;
@@ -149,4 +151,24 @@ public class CustomerController {
 
 	  			 }
 	  		}  
+	        
+			@GetMapping("/getAllCustmerswithpagination")
+			public ResponseEntity<ResponseMessage> getByAllCustmerpagination(@RequestParam int page,
+					@RequestParam int size, @RequestParam String sortField, @RequestParam String pageDir) {
+
+				Page<Customer> byAllCustmersWithPaginations = custmerService.getByAllCustomersWithPaginations(page, size,
+						sortField, pageDir);
+
+				if (byAllCustmersWithPaginations != null) {
+
+					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_OK, Constants.SUCCESS,
+							"All Custemers getting with pagination successfully", byAllCustmersWithPaginations));
+				} else {
+
+					return ResponseEntity.ok(new ResponseMessage(HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED,
+							"All Custemers getting  pagination Failure", byAllCustmersWithPaginations));
+
+				}
+
+			}
 }

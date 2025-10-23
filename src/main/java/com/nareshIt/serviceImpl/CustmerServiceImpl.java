@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.nareshIt.entity.Customer;
+import com.nareshIt.exceptions.CustomerIDNotFoundException;
+import com.nareshIt.exceptions.CustomerNotFoundException;
 import com.nareshIt.repository.CustmerRepository;
 import com.nareshIt.service.CustomerService;
 
@@ -50,7 +55,8 @@ public class CustmerServiceImpl implements  CustomerService{
 
 			} else {
 
-				throw new RuntimeException("Custmer Not Found");
+				// throw new RuntimeException("Custmer Not Found");
+				throw new CustomerNotFoundException("Customer Not Found!");
 			}
 		}
 		return customer;
@@ -61,7 +67,8 @@ public class CustmerServiceImpl implements  CustomerService{
 		Optional<Customer> byId = custmerRepoo.findById(id);
 		if (!byId.isPresent()) {
 
-			throw new RuntimeException("Custmer Id Not Found");
+			//throw new RuntimeException("Custmer Id Not Found");
+			throw new CustomerIDNotFoundException("Customer ID Not Found");
 		}
 		return byId.get();
 	}
@@ -71,5 +78,15 @@ public class CustmerServiceImpl implements  CustomerService{
 		List<Customer> list = custmerRepoo.findAll();
 
 		return list;
+	}
+	
+	@Override
+	public Page<Customer> getByAllCustomersWithPaginations(int page, int size, String sortField, String pageDir) {
+		
+	Sort sort = pageDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+		
+		PageRequest request = PageRequest.of(page, size, sort);
+		
+		return custmerRepoo.findAll(request);
 	}
 }
