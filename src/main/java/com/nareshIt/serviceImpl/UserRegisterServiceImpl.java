@@ -92,6 +92,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setLastName(userRequestDto.getLastName());
 			user.setEmail(userRequestDto.getEmail());
 			user.setPassword(Base64.getEncoder().encodeToString(userRequestDto.getPassword().getBytes()));
+			user.setContactId(userRequestDto.getContactId());
 			userRegisterRepo.save(user);
 			
 			if (files != null && files.length > 0) {
