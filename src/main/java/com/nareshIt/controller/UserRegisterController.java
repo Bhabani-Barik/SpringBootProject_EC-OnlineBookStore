@@ -1,6 +1,7 @@
 package com.nareshIt.controller;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -115,6 +116,10 @@ public class UserRegisterController {
 	
 	
 	
+	@Operation(summary = "Create User Register and upload multiple images", description = "e commerece online books store  register the users and upload multiple images")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "user register and image upload successfully"),
+			@ApiResponse(responseCode = "400", description = "user register and image upload failed"),
+			@ApiResponse(responseCode = "500", description = "Internal server error") })
 	@PostMapping("/uploadMultiUserRegister")
 	public ResponseEntity<ResponseMessage> uploadMultiUserRegister(@RequestParam String jsonData,
 			MultipartFile[] files) {
@@ -132,7 +137,7 @@ public class UserRegisterController {
 
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(
-						HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED, "user registered failed"));
+						HttpURLConnection.HTTP_BAD_REQUEST, Constants.FAILED, "user registered failed", uploadMultiUserRegister));
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(
@@ -141,5 +146,16 @@ public class UserRegisterController {
 		}
 
 	}
+	
+	@Operation(summary = "Get all user details", description = "e commerece online books store, get all users data")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "user details fetched successfully"),
+			@ApiResponse(responseCode = "400", description = "user details fetched failure"),
+			@ApiResponse(responseCode = "500", description = "Internal server error") })
+	@GetMapping("/getAllUsers")
+	 public List<UserRegister>	 getAllUserDetalsData() {
+		 List<UserRegister> allUsersRegisterDetails = userRegisterService.getAllUsersRegisterDetails();
+		 return allUsersRegisterDetails;
+	 	
+	 }
 
 }
