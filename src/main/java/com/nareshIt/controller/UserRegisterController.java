@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "UserRegisterController ", description = "UserRegister Regsiter and Login") // swagger annotation
 @RestController
-@RequestMapping("api")
+@RequestMapping("user")
 public class UserRegisterController {
 	
 	
