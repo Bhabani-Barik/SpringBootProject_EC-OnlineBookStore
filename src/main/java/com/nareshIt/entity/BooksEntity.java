@@ -35,6 +35,9 @@ public class BooksEntity {
 	@Column(name = "author")
 	private String author;
 	
+	@Column(name = "price")
+	private Long price;
+	
 	@CreationTimestamp
 	@Column(name = "createdDate" ,updatable = false)
 	public LocalDateTime createdDate;
