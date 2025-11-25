@@ -24,7 +24,9 @@ import com.nareshIt.utility.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "CustomerController", description = "Customer Controller") // swagger annotation
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
@@ -32,10 +34,10 @@ public class CustomerController {
 	@Autowired CustomerService custmerService;
 	
 
-	 @Operation(summary = "Create User Custmers",description = "e commerece online books store  register the users")
+	 @Operation(summary = "Create Custmers",description = "e commerece online books store  create the customer")
 	    @ApiResponses({
-	     @ApiResponse(responseCode = "201",description = "user register successfully"),
-	     @ApiResponse(responseCode = "400",description = "user register failure"),
+	     @ApiResponse(responseCode = "201",description = "customer created successfully"),
+	     @ApiResponse(responseCode = "400",description = "customer created operation failure"),
 	     @ApiResponse(responseCode = "500",description = "Internal server error")
 	     })
 	@PostMapping("/custmersave")
@@ -66,6 +68,13 @@ public class CustomerController {
 			}
 		}
 	 
+	 
+	 @Operation(summary = "Update Custmers",description = "e commerece online books store update the customer")
+	    @ApiResponses({
+	     @ApiResponse(responseCode = "201",description = "Customer updated successfully"),
+	     @ApiResponse(responseCode = "400",description = "Customer update operation failure"),
+	     @ApiResponse(responseCode = "500",description = "Internal server error")
+	     })
 	    @PutMapping("/updatesCustmer")
 		public ResponseEntity<ResponseMessage> custmerUpdates(@RequestBody Customer customer) {
 
@@ -95,6 +104,13 @@ public class CustomerController {
 		}
 	 
 	 
+	 
+	 @Operation(summary = "Create or Update Custmers",description = "e commerece online books store  create or update customer")
+	    @ApiResponses({
+	     @ApiResponse(responseCode = "201",description = "customer created or updated successfully"),
+	     @ApiResponse(responseCode = "400",description = "customer created or updated operation failure"),
+	     @ApiResponse(responseCode = "500",description = "Internal server error")
+	     })
 	    @PostMapping("/createdOrUpdatesCustmer")
 		public ResponseEntity<ResponseMessage> custmerORUpdates(@RequestBody Customer customer) {
 
@@ -124,8 +140,15 @@ public class CustomerController {
 		}
 	  
 	 
+	 
+	 @Operation(summary = "Get Customer By ID",description = "e commerece online books store  Get Customer By ID")
+	    @ApiResponses({
+	     @ApiResponse(responseCode = "200",description = "customer by id retrieved successfully"),
+	     @ApiResponse(responseCode = "400",description = "customer by id operation failure"),
+	     @ApiResponse(responseCode = "500",description = "Internal server error")
+	     })
 	        @GetMapping("/getByCustmerId/{id}")
-			public ResponseEntity<ResponseMessage> custmerORUpdates(@PathVariable Long id) {
+			public ResponseEntity<ResponseMessage> getCustomerByID(@PathVariable Long id) {
 
 				Customer byCustmersId = custmerService.getByCustomerId(id);
 				if (byCustmersId != null) {
@@ -139,6 +162,13 @@ public class CustomerController {
 				}
 			}
 	        
+	 
+	 @Operation(summary = "Get All Customers",description = "e commerece online books store, get all customers")
+	    @ApiResponses({
+	     @ApiResponse(responseCode = "200",description = " All customer retrieved successfully"),
+	     @ApiResponse(responseCode = "400",description = " getAllOperation operation failure"),
+	     @ApiResponse(responseCode = "500",description = "Internal server error")
+	     })
 	        @GetMapping("/getAllCustmers")
 	  		public ResponseEntity<ResponseMessage> getAllCustmerss() {
 	  		   
@@ -151,7 +181,15 @@ public class CustomerController {
 
 	  			 }
 	  		}  
-	        
+	 
+	 
+	 
+	 @Operation(summary = "Get All Custmers with Pagination",description = "e commerece online books store, Get All Custmers with Pagination")
+	    @ApiResponses({
+	     @ApiResponse(responseCode = "200",description = "Customer Data retrived successfully"),
+	     @ApiResponse(responseCode = "400",description = "Customer Data retrieved operation failure"),
+	     @ApiResponse(responseCode = "500",description = "Internal server error")
+	     })
 			@GetMapping("/getAllCustmerswithpagination")
 			public ResponseEntity<ResponseMessage> getByAllCustmerpagination(@RequestParam int page,
 					@RequestParam int size, @RequestParam String sortField, @RequestParam String pageDir) {
