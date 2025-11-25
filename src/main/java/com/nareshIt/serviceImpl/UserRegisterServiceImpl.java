@@ -21,15 +21,15 @@ import com.nareshIt.service.UserRegisterService;
 
 @Service
 public class UserRegisterServiceImpl implements UserRegisterService {
-	
+
 	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
 
 	@Autowired
 	UserRegisterRepo userRegisterRepo;
-	
-	@Autowired private FileRepo fileRepo;
 
+	@Autowired
+	private FileRepo fileRepo;
 
 	@Override
 	public UserRegister insertUserRegister(UserRequestDto userRequestDto) {
@@ -51,29 +51,28 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 		return user;
 
 	}
-	
-
 
 	@Override
 	public UserRegister checkUserDetails(UserRequestDto userRequestDto) {
 		logger.info("Login service layer calling or started");
+
 		UserRegister findbyEmail = userRegisterRepo.findByEmail(userRequestDto.getEmail());
-		
-		//Decoding the Password
-		if(findbyEmail!=null) {
-			
+
+		// Decoding the Password
+		if (findbyEmail != null) {
+
 			String decode = new String(Base64.getDecoder().decode(findbyEmail.getPassword()));
-			
-			if(decode.equals(userRequestDto.getPassword())) {
-				
+
+			if (decode.equals(userRequestDto.getPassword())) {
+
 				logger.info("Login service layer calling or ended");
 				return findbyEmail;
 			}
-			
+
 		}
 		return findbyEmail;
 	}
-	
+
 //	@Override
 //	public UserRegister checkUserDetails(UserRequestDto userRequestDto) {
 //		return Optional.ofNullable(userRegisterRepo.findByEmail(userRequestDto.getEmail())).filter(
@@ -90,12 +89,11 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 		return new UserRequest(userRegister.getFirstName(), userRegister.getLastName(), userRegister.getEmail());
 	}
 
-
 	@Override
 	public UserRegister uploadMultiUserRegister(UserRequestDto userRequestDto, MultipartFile[] files) {
 		logger.info("uploadMultiUserRegister service layer calling or started");
 		UserRegister user = new UserRegister();
-		
+
 		try {
 			user.setFirstName(userRequestDto.getFirstName());
 			user.setLastName(userRequestDto.getLastName());
@@ -104,7 +102,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setContactId(userRequestDto.getContactId());
 			logger.info("Registration service layer: user saved in DB");
 			userRegisterRepo.save(user);
-			
+
 			if (files != null && files.length > 0) {
 				for (MultipartFile multipartFile : files) {
 					FilesEntity fss = new FilesEntity();
@@ -116,14 +114,15 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 					fileRepo.save(fss);
 				}
 			}
-		} catch( Exception e) {
-			logger.error("New user creation & file upload process failed in Bookstore-DB . Exception:" + e.getMessage());
+		} catch (Exception e) {
+			logger.error(
+					"New user creation & file upload process failed in Bookstore-DB . Exception:" + e.getMessage());
 			e.printStackTrace();
 		}
-			
+
 		return user;
 	}
-	
+
 	@Override
 	@Cacheable(value = "getAllUsers")
 	public List<UserRegister> getAllUsersRegisterDetails() {
@@ -133,8 +132,5 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 		logger.info("getAllUsersRegisterDetails service layer calling or ended");
 		return list;
 	}
-	
-	
-
 
 }
